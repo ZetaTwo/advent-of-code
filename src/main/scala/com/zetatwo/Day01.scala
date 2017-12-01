@@ -10,9 +10,16 @@ object Day01 {
 
   def doSum(input: String, rotation: Int): Int = {
     val digits: Seq[Int] = input.map(c => Integer.valueOf(c.toString).intValue())
-    val rotated: Seq[Int] = digits.slice(rotation, digits.length) ++ digits.slice(0, rotation)
+
+    val (left, right) = digits.splitAt(rotation)
+    val rotated: Seq[Int] = right ++ left
+
     val pairs: Seq[(Int, Int)] = digits zip rotated
-    val pairvalues: Seq[Int] = pairs.flatMap(p => if (p._1 == p._2) List(p._1) else List())
+    val pairvalues: Seq[Int] = pairs.flatMap({
+      case (a, b) if a == b => Some(a)
+      case _ => None
+    })
+
     pairvalues.sum
   }
 
