@@ -1,6 +1,8 @@
 package com.zetatwo
 
 object Day04 {
+  val WHITESPACE = "\\s+"
+
   def main(args: Array[String]): Unit = {
     val lines: Seq[String] = io.Source.stdin.getLines.toList
 
@@ -9,29 +11,23 @@ object Day04 {
   }
 
   def validatepassword(password: String): Boolean = {
-    def loop(remainder: Seq[String], seen: Set[String]): Boolean = {
-      if (remainder.isEmpty)
-       true
-      else if (seen.contains(remainder.head))
-        false
-      else
-        loop(remainder.tail, seen + remainder.head)
+    def loop(remainder: List[String], seen: Set[String]): Boolean = remainder match {
+      case current :: rest if seen.contains(current) => false
+      case current :: rest => loop(rest, seen + current)
+      case _ => true
     }
 
-    loop(password.split("\\s+"), Set())
+    loop(password.split(WHITESPACE).toList, Set())
   }
 
   def validatepassword2(password: String): Boolean = {
-    def loop(remainder: Seq[String], seen: Set[String]): Boolean = {
-      if (remainder.isEmpty)
-        true
-      else if (seen.contains(remainder.head.sorted))
-        false
-      else
-        loop(remainder.tail, seen + remainder.head.sorted)
+    def loop(remainder: List[String], seen: Set[String]): Boolean = remainder match {
+      case current :: rest if seen.contains(current.sorted) => false
+      case current :: rest => loop(rest, seen + current.sorted)
+      case _ => true
     }
 
-    loop(password.split("\\s+"), Set())
+    loop(password.split(WHITESPACE).toList, Set())
   }
 
   def validate(input: Seq[String]): Int = {

@@ -1,11 +1,13 @@
 package com.zetatwo
 
 object Day03 {
-  def main(args: Array[String]): Unit = {
-    val input = io.StdIn.readLine()
+  type Coordinate = (Int, Int)
 
-    printf("Result 1: %d", distance(Integer.valueOf(input.trim).intValue()))
-    printf("Result 2: %d", sums(Integer.valueOf(input.trim).intValue()))
+  def main(args: Array[String]): Unit = {
+    val input: Int = io.StdIn.readLine().trim.toInt
+
+    printf("Result 1: %d", distance(input))
+    printf("Result 2: %d", sums(input))
   }
 
   def layerparams(tileindex: Int): (Int, Int) = {
@@ -25,12 +27,7 @@ object Day03 {
   def distance(tileindex: Int, sidelength: Int, startidx: Int): Int = {
     val offset = tileindex - startidx + 1
     val sideoffset = sidelength - 1
-    offset match {
-      case _ if 0 until sideoffset contains offset => sidedistance(offset, sidelength)
-      case _ if sideoffset until 2*sideoffset contains offset => sidedistance(offset - sideoffset, sidelength)
-      case _ if 2*sideoffset until 3*sideoffset contains offset => sidedistance(offset - 2*sideoffset, sidelength)
-      case _ if 3*sideoffset until 4*sideoffset contains offset => sidedistance(offset - 3*sideoffset, sidelength)
-    }
+    sidedistance(offset % sideoffset, sidelength)
   }
 
   def distance(input: Int): Int = {
@@ -42,8 +39,7 @@ object Day03 {
     }
   }
 
-
-  def nextcoord(coord: (Int, Int), sidelength: Int): (Int, Int) = {
+  def nextcoord(coord: Coordinate, sidelength: Int): Coordinate = {
     val r = (sidelength-1)/2
     coord match {
       case (0, 0) => (1, 0)
@@ -59,7 +55,7 @@ object Day03 {
     }
   }
 
-  def nextval(newcoord: (Int, Int), cells: Map[(Int, Int), Int]): Int = {
+  def nextval(newcoord: Coordinate, cells: Map[Coordinate, Int]): Int = {
     val (x, y) = newcoord
     cells.getOrElse(  (x + 1, y    ), 0) +
       cells.getOrElse((x + 1, y + 1), 0) +
@@ -71,13 +67,13 @@ object Day03 {
       cells.getOrElse((x + 1, y - 1), 0)
   }
 
-  def nextsidelength(newcoord: (Int, Int), sidelength: Int): Int = {
+  def nextsidelength(newcoord: Coordinate, sidelength: Int): Int = {
     val (x, y) = newcoord
     if (x > 0 && x+y-1 == 0) 2*x+1 else sidelength
   }
 
   def sums(input: Int): Int = {
-    def loop(limit: Int, cells: Map[(Int, Int), Int], coord: (Int, Int), sidelength: Int): Int = {
+    def loop(limit: Int, cells: Map[Coordinate, Int], coord: Coordinate, sidelength: Int): Int = {
       val newcoord = nextcoord(coord, sidelength)
       val newval = nextval(newcoord, cells)
       val newsidelength = nextsidelength(newcoord, sidelength)

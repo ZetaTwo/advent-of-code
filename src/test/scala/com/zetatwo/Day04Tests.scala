@@ -535,7 +535,6 @@ class Day04Tests extends FunSuite {
       """.trim.stripMargin.split("\n")
 
       assert(Day04.validate(testinput) == 455)
+      assert(Day04.validate2(testinput) == 186)
   }
-
-
 }
