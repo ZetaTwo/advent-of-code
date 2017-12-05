@@ -1,5 +1,7 @@
 package com.zetatwo
 
+import scala.annotation.tailrec
+
 object Day03 {
   type Coordinate = (Int, Int)
 
@@ -73,6 +75,7 @@ object Day03 {
   }
 
   def sums(input: Int): Int = {
+    @tailrec
     def loop(limit: Int, cells: Map[Coordinate, Int], coord: Coordinate, sidelength: Int): Int = {
       val newcoord = nextcoord(coord, sidelength)
       val newval = nextval(newcoord, cells)
