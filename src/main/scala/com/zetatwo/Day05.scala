@@ -8,7 +8,7 @@ object Day05 {
     val lines: Seq[String] = io.Source.stdin.getLines.toList
 
     printf("Result 1: %d\n", time { simulate(lines.map(l => l.toInt).toVector) })
-    printf("Result 1: %d\n", time { simulate2(lines.map(l => l.toInt).toVector) })
+    printf("Result 2: %d\n", time { simulate2(lines.map(l => l.toInt).toVector) })
   }
 
   def simulate(program: Vector[Int]): Int = {
@@ -36,6 +36,4 @@ object Day05 {
     }
     step(program, 0, 0)
   }
-
-
 }
