@@ -3,7 +3,6 @@ package com.zetatwo
 import com.zetatwo.Common._
 
 import scala.annotation.tailrec
-import scala.collection.script.Index
 
 object Day09 {
 
@@ -27,6 +26,8 @@ object Day09 {
   }
 
   def parse(input: String): (Int, Int) = {
+
+    @tailrec
     def traverse(remaining: String, level: Int, score: Int, characters: Int): (Int, Int) = {
       if(remaining.isEmpty) return (score, characters)
 
