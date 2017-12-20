@@ -13,8 +13,8 @@ object Day12 {
   }
 
   def parseline(input: String): (Int, Seq[Int]) = {
-    val parts = input.split(" <-> ", 2)
-    (parts.head.toInt, parts.tail.head.split(", ").map(_.toInt))
+    val index :: connections :: _ = input.split(" <-> ", 2).toList
+    (index.toInt, connections.split(", ").map(_.toInt))
   }
 
   def unionprograms(inputs: Seq[String]): UnionFind = {
