@@ -1,5 +1,6 @@
 use std::collections::HashSet;
 
+// where T: std::ops::Sub + std::cmp::Eq + std::hash::Hash + std::ops::Sub<Output=T> + Copy
 pub fn find_term<'a, I>(vals: I, target: u32) -> Option<&'a u32>
 where
     I: IntoIterator<Item = &'a u32>,
