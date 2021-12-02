@@ -51,12 +51,19 @@ impl FromStr for Command {
     }
 }
 
+pub trait ApplyCommand {
+    fn apply_command(&self, command: &Command) -> Self;
+    fn run_commands<I>(commands: &I) -> Self
+    where
+        for<'a> &'a I: IntoIterator<Item = &'a Command>;
+}
+
 pub struct State {
     pub horizontal: u32,
     pub depth: u32,
 }
 
-impl State {
+impl ApplyCommand for State {
     fn apply_command(&self, command: &Command) -> State {
         match command {
             Command::Down(down) => State {
@@ -73,6 +80,19 @@ impl State {
             },
         }
     }
+
+    fn run_commands<I>(commands: &I) -> Self
+    where
+        for<'a> &'a I: IntoIterator<Item = &'a Command>,
+    {
+        run_commands(
+            State {
+                depth: 0,
+                horizontal: 0,
+            },
+            commands,
+        )
+    }
 }
 
 pub struct State2 {
@@ -81,7 +101,7 @@ pub struct State2 {
     aim: i32,
 }
 
-impl State2 {
+impl ApplyCommand for State2 {
     fn apply_command(&self, command: &Command) -> State2 {
         match command {
             Command::Down(down) => State2 {
@@ -101,33 +121,30 @@ impl State2 {
             },
         }
     }
+
+    fn run_commands<I>(commands: &I) -> Self
+    where
+        for<'a> &'a I: IntoIterator<Item = &'a Command>,
+    {
+        run_commands(
+            State2 {
+                depth: 0,
+                horizontal: 0,
+                aim: 0,
+            },
+            commands,
+        )
+    }
 }
 
-pub fn run_commands<I>(commands: &I) -> State
+fn run_commands<I, T>(start: T, commands: &I) -> T
 where
     for<'a> &'a I: IntoIterator<Item = &'a Command>,
+    T: ApplyCommand,
 {
-    commands.into_iter().fold(
-        State {
-            horizontal: 0,
-            depth: 0,
-        },
-        |state, command| state.apply_command(command),
-    )
-}
-
-pub fn run_commands2<I>(commands: &I) -> State2
-where
-    for<'a> &'a I: IntoIterator<Item = &'a Command>,
-{
-    commands.into_iter().fold(
-        State2 {
-            horizontal: 0,
-            depth: 0,
-            aim: 0,
-        },
-        |state, command| state.apply_command(command),
-    )
+    commands
+        .into_iter()
+        .fold(start, |state, command| state.apply_command(command))
 }
 
 #[cfg(test)]
@@ -156,7 +173,7 @@ mod tests {
             Command::Down(8),
             Command::Forward(2),
         ];
-        let res = run_commands(&commands);
+        let res = State::run_commands(&commands);
         assert_eq!(res.depth, 10);
         assert_eq!(res.horizontal, 15);
     }
@@ -171,7 +188,7 @@ mod tests {
             Command::Down(8),
             Command::Forward(2),
         ];
-        let res = run_commands2(&commands);
+        let res = State2::run_commands(&commands);
         assert_eq!(res.depth, 60);
         assert_eq!(res.horizontal, 15);
         assert_eq!(res.aim, 10);
@@ -184,7 +201,7 @@ mod tests {
         let input =
             utils::get_parsed_lines::<Command, _>(reader).expect("Failed to read test data");
 
-        let res = run_commands(&input);
+        let res = State::run_commands(&input);
 
         assert_eq!(res.depth * res.horizontal, 1727835);
     }
@@ -196,7 +213,7 @@ mod tests {
         let input =
             utils::get_parsed_lines::<Command, _>(reader).expect("Failed to read test data");
 
-        let res = run_commands2(&input);
+        let res = State2::run_commands(&input);
 
         assert_eq!(res.depth * res.horizontal, 1544000595);
     }
