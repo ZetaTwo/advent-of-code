@@ -87,8 +87,8 @@ mod tests {
     fn test_day01a() {
         let file = File::open("../input/1.in").expect("Failed to open test data");
         let reader = BufReader::new(file);
-
         let input = utils::get_parsed_lines::<u32, _>(reader).expect("Failed to read test data");
+        
         let num_increases = count_increases(&input);
 
         assert_eq!(num_increases, 1288);
@@ -98,8 +98,8 @@ mod tests {
     fn test_day01b() {
         let file = File::open("../input/1.in").expect("Failed to open test data");
         let reader = BufReader::new(file);
-
         let input = utils::get_parsed_lines::<u32, _>(reader).expect("Failed to read test data");
+        
         let windows = sum_windows3(&input);
         let num_increases = count_increases(&windows);
 
