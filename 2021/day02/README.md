@@ -29,6 +29,8 @@ After following these instructions, you would have a horizontal position of 15 a
 
 Calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
 
+Your puzzle answer was 1727835.
+
 ## Part Two
 
 Based on your calculations, the planned course doesn't seem to make any sense. You find the submarine manual and discover that the process is actually slightly more complicated.
@@ -53,3 +55,7 @@ forward 2 adds 2 to your horizontal position, a total of 15. Because your aim is
 After following these new instructions, you would have a horizontal position of 15 and a depth of 60. (Multiplying these produces 900.)
 
 Using this new interpretation of the commands, calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
+
+Your puzzle answer was 1544000595.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
