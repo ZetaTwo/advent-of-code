@@ -21,14 +21,21 @@ impl From<std::num::ParseIntError> for InputError {
     }
 }
 
-pub fn get_integer_lines<T>() -> Result<Vec<T>, InputError>
+pub fn get_parsed_lines_stdin<T>() -> Result<Vec<T>, InputError>
 where
     T: std::str::FromStr,
     InputError: From<<T as std::str::FromStr>::Err>,
 {
-    let stdin = io::stdin();
-    stdin
-        .lock()
+    get_parsed_lines(io::stdin().lock())
+}
+
+pub fn get_parsed_lines<T, R>(reader: R) -> Result<Vec<T>, InputError>
+where
+    R: BufRead,
+    T: std::str::FromStr,
+    InputError: From<<T as std::str::FromStr>::Err>,
+{
+    reader
         .lines()
         .map(|line| -> Result<T, InputError> { Ok(line?.parse::<T>()?) })
         .collect()
