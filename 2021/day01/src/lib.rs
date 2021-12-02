@@ -13,8 +13,7 @@ where
 
 pub fn sum_windows3<'a, T: 'a, I>(values: I) -> Vec<T>
 where
-    //T: std::iter::Sum<&'a T> + Clone + Copy,
-    T: std::iter::Sum + Clone + Copy,
+    T: Copy + std::iter::Sum,
     I: IntoIterator<Item = T>,
 {
     sum_windows::<'a, T, I, 3>(values)
@@ -22,14 +21,13 @@ where
 
 pub fn sum_windows<'a, T: 'a, I, const N: usize>(values: I) -> Vec<T>
 where
-    //T: std::iter::Sum<&'a T> + Clone + Copy,
-    T: std::iter::Sum + Clone + Copy,
+    T: Copy + std::iter::Sum,
     I: IntoIterator<Item = T>,
 {
     values
         .into_iter()
         .windows::<N>()
-        .map(|vals| vals.iter().cloned().sum())
+        .map(|vals| vals.iter().copied().sum())
         .collect()
 }
 
