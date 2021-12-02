@@ -7,6 +7,7 @@ use std::io::prelude::*;
 pub enum InputError {
     IOError(std::io::Error),
     ParseIntError(std::num::ParseIntError),
+    ParseError(Box<dyn std::error::Error>),
 }
 
 impl From<std::io::Error> for InputError {
