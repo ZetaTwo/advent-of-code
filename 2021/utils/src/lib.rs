@@ -2,6 +2,8 @@ pub mod maths;
 
 use std::io;
 use std::io::prelude::*;
+use std::convert::Infallible;
+
 
 #[derive(Debug)]
 pub enum InputError {
@@ -19,6 +21,12 @@ impl From<std::io::Error> for InputError {
 impl From<std::num::ParseIntError> for InputError {
     fn from(e: std::num::ParseIntError) -> InputError {
         InputError::ParseIntError(e)
+    }
+}
+
+impl From<Infallible> for InputError {
+    fn from(_: Infallible) -> Self {
+        unreachable!()
     }
 }
 
